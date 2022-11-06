@@ -1,0 +1,113 @@
+--  SQL Magic Master 
+
+-- Musetty purna sai vinay
+-- N171160-CSE
+
+-- Creating Table for Users 
+
+ CREATE TABLE Users(
+ Id int PRIMARY KEY,
+ LastName varchar(100) NOT NULL,
+ FirstName varchar(100) NOT NULL,
+ Age int,
+ Salary int
+ );
+
+-- Creating Table for Movies
+
+ CREATE TABLE Movies(
+ Id int,
+ MovieName varchar(100),
+ hero varchar(100),
+ heroin varchar(100),
+ ticketPrice int,
+ movieRating int CHECK (
+ movieRating >= 0
+ AND movieRating <= 10
+ ),
+ userId int,
+ FOREIGN KEY (userId) REFERENCES Users(Id)
+ );
+
+-- Inserting Users into users table
+
+ INSERT INTO
+ Users
+ VALUES
+ (1, "musetty", "vinay", 21, 20000),
+ (2, "seelam", "ashok", 22, 20000),
+ (3, "kota", "madhu", 23, 23000),
+ (4, "patikolla ", "preetham", 24, 230430);
+ 
+-- Inserting Movies into Movies table
+
+INSERT INTO  Movies VALUES
+ (1, "jersy", "nani", "shradda", 140, 4, 1),
+ (2, "rrr", "ramcharan", "alia", 300, 8, 1),
+ (3, "magadhera", "Ram charan", "kajal", 150, 3, 2),
+ (4, "ghost", "nagarjuna", "sonal", 100, 4, 2),
+ (5, "ganesh", "Ram", "kajal", 100, 4, 2),
+ (6, "Bahubali", "prabhas", "Anushka", 250, 9, 1),
+ (7,"urvasilorakshasi","allusirish","anu",100,10,3),
+ (8,"ginna","manchu ","sunny leone",300,6,4),
+ (9, "kgf", "yash", "sridini", 460, 7, 2);
+
+-- list all movies of a user
+
+ SELECT
+ *
+ FROM
+ Movies
+ WHERE
+ userId = 1;
+
+ -- list of movies whre price greater than 150 of a user
+
+ SELECT
+ *
+ FROM
+ movies
+ WHERE
+ userId = 1
+ AND ticketPrice > 150;
+
+ -- list of moive where rating below 5 of a user 
+
+ SELECT
+ *
+ FROM
+ movies
+ WHERE
+ movieRating < 5
+ AND userId = 1;
+
+ -- list of movies of a user where heroin repeats more than twice
+
+ SELECT
+ *
+ FROM
+ movies
+ WHERE
+ userId = 1
+ AND heroin IN (
+ SELECT
+ heroin
+ FROM
+ movies
+ WHERE
+ userId = 1
+ GROUP BY
+ heroin
+ HAVING
+ count(*) >= 2
+ );
+
+ -- total and avg amount spent by a user 
+
+ SELECT
+ sum(ticketPrice) AS Total,
+ round(avg(ticketPrice), 2) AS Avg_Price
+ FROM
+ movies
+ WHERE
+ userId = 1;
